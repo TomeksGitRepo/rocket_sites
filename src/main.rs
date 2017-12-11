@@ -3,16 +3,13 @@
 
 extern crate rocket;
 
-
-mod other {
-    #[get("/world")]
-    pub fn world() -> &'static str {
-        "Hello, world!"
+    #[get("/hello/<name>")]
+    pub fn hello(name: &RawStr) -> String {
+        format!("Hello, {}!", name.as_str())
     }
-}
 
-use other::world;
+use rocket::http::RawStr;
 
 fn main() {
-    rocket::ignite().mount("/hello", routes![other::world]).launch();
+    rocket::ignite().mount("/", routes![hello]).launch();
 }
